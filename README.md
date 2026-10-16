@@ -1,91 +1,146 @@
 
-# TP : Architecture Microservices avec Spring Cloud
+# Projet : Application Bancaire avec Microservices et Agent IA
 
-## 1. Objectif du TP
+## 1. Objectif du projet
 
-Créer une application basée sur une architecture microservices permettant de gérer des factures contenant des produits et associées à des clients.
+L'objectif de ce projet est de développer une application bancaire basée sur une architecture microservices avec Spring Boot et Spring Cloud, puis d'intégrer un agent d'intelligence artificielle permettant d'interagir avec les fonctionnalités des microservices.
 
-Ce TP a pour objectif de mettre en pratique les concepts de communication interservices, de découverte des services, de routage et de configuration centralisée avec Spring Boot et Spring Cloud.
+Le projet est organisé en deux parties : la mise en place de l'architecture backend distribuée et le développement d'un agent IA connecté aux services bancaires via le protocole MCP (*Model Context Protocol*).
 
-## 2. Architecture du système
-
-L'application est composée des microservices suivants :
-
-- **Customer-Service** : gestion des clients.
-- **Inventory-Service** : gestion des produits.
-- **Gateway-Service** : routage des requêtes vers les microservices.
-- **Eureka Discovery Service** : enregistrement et découverte des services.
-- **Billing-Service** : gestion des factures contenant des produits et associées à des clients.
-- **Config-Service** : centralisation de la configuration des microservices.
-
-## 3. Travail réalisé
-
-### 3.1. Customer-Service
-
-Ce microservice permet de gérer les clients et leurs informations. Il expose des services permettant d'accéder aux données des clients et d'effectuer les opérations de gestion nécessaires.
-
-### 3.2. Inventory-Service
-
-Ce microservice assure la gestion des produits. Il permet de consulter les informations relatives aux produits utilisées par les autres services de l'application.
-
-### 3.3. Spring Cloud Gateway
-
-La Gateway constitue le point d'entrée de l'application. Elle reçoit les requêtes des clients et les redirige vers les microservices correspondants.
-
-### 3.4. Configuration statique du routage
-
-Une configuration statique des routes est mise en place dans la Gateway. Les chemins des requêtes et les adresses des services de destination sont définis explicitement.
-
-### 3.5. Eureka Discovery Service
-
-Eureka permet aux microservices de s'enregistrer auprès d'un annuaire commun et de découvrir les autres services disponibles.
-
-Ce mécanisme facilite la communication entre les microservices sans dépendre uniquement d'adresses définies manuellement.
-
-### 3.6. Configuration dynamique des routes
-
-La Gateway utilise le mécanisme de découverte des services pour faciliter le routage dynamique des requêtes vers les microservices enregistrés dans Eureka.
-
-### 3.7. Billing-Service avec OpenFeign
-
-Le Billing-Service permet de gérer les factures associées aux clients et contenant des produits.
-
-OpenFeign simplifie les appels HTTP entre les microservices. Il permet au service de facturation de communiquer avec Customer-Service et Inventory-Service afin de récupérer les informations nécessaires à la gestion des factures.
-
-### 3.8. Config-Service
-
-Le Config-Service centralise les fichiers de configuration de l'application. Il permet aux microservices clients de récupérer leurs paramètres depuis un serveur de configuration commun, facilitant ainsi la maintenance et la gestion du système.
-
-## 4. Technologies utilisées
+## 2. Technologies utilisées
 
 - **Java** : langage de programmation.
-- **Spring Boot** : création des microservices.
+- **Spring Boot** : développement des microservices.
 - **Spring Cloud Gateway** : routage des requêtes.
-- **Netflix Eureka** : découverte et enregistrement des services.
-- **OpenFeign** : communication HTTP entre les microservices.
-- **Spring Cloud Config** : gestion centralisée de la configuration.
-- **Maven** : gestion des dépendances et construction des projets.
+- **Netflix Eureka** : découverte des services.
+- **Spring Cloud OpenFeign** : communication interservices.
+- **Resilience4J** : tolérance aux pannes avec Circuit Breaker.
+- **Swagger / OpenAPI** : documentation et test des API REST.
+- **Postman** : test des services backend.
+- **Spring AI** : intégration de l'intelligence artificielle.
+- **MCP (Model Context Protocol)** : exposition et utilisation des fonctionnalités des microservices par un agent IA.
+- **Telegram et Discord** : interfaces conversationnelles pour le chatbot.
 
-## 5. Résultats attendus
+## 3. Partie 1 : Architecture Microservices
 
-À l'issue de ce TP, l'application doit permettre de :
+### 3.1. Développement du Customer-Service
 
-- Gérer les clients et les produits.
-- Gérer les factures associées aux clients et contenant des produits.
-- Router les requêtes à travers la Gateway.
+Création du microservice chargé de gérer les clients de l'application bancaire. Il expose les fonctionnalités nécessaires à la consultation et à la gestion des informations des clients.
+
+### 3.2. Développement de l'EBank-Service
+
+Création du microservice dédié aux opérations bancaires. Il permet de gérer les fonctionnalités liées aux comptes bancaires et aux données associées.
+
+### 3.3. Communication interservices avec OpenFeign
+
+Mise en place de la communication entre Customer-Service et EBank-Service à l'aide de Spring Cloud OpenFeign.
+
+Cette approche simplifie les appels HTTP entre les microservices et facilite l'intégration de leurs fonctionnalités respectives.
+
+### 3.4. Tolérance aux pannes avec Resilience4J
+
+Intégration du mécanisme Circuit Breaker avec Resilience4J afin de gérer les défaillances lors des communications entre services.
+
+Ce mécanisme permet notamment de limiter les appels vers un service temporairement indisponible et de prévoir un comportement de repli lorsque cela est configuré.
+
+### 3.5. Développement de la Gateway
+
+Mise en place de Spring Cloud Gateway comme point d'entrée de l'application.
+
+La Gateway permet de router les requêtes vers les microservices appropriés et de centraliser l'accès à leurs API.
+
+### 3.6. Développement du Discovery Service
+
+Création d'un service de découverte basé sur Eureka.
+
+Il permet aux microservices de s'enregistrer et de découvrir les autres services disponibles, facilitant ainsi la communication dans une architecture distribuée.
+
+### 3.7. Tests des services backend
+
+Utilisation de Postman et de Swagger UI pour tester les API REST des microservices.
+
+Ces outils permettent de vérifier les endpoints, les paramètres des requêtes, les données retournées et le comportement des services.
+
+## 4. Partie 2 : Agent IA et protocole MCP
+
+### 4.1. Développement d'un agent IA avec Spring AI
+
+Création d'un agent d'intelligence artificielle basé sur Spring AI afin de permettre aux utilisateurs d'interagir avec les fonctionnalités de l'application bancaire en langage naturel.
+
+### 4.2. Exposition des fonctionnalités via MCP
+
+Mise en place du protocole MCP (*Model Context Protocol*) pour exposer les fonctionnalités des microservices sous forme d'outils utilisables par l'agent IA.
+
+Cette approche permet à l'agent d'accéder aux opérations autorisées des services bancaires à travers une interface standardisée.
+
+### 4.3. Tests avec un client MCP
+
+Utilisation d'un client MCP pour vérifier la connexion au serveur MCP et tester les outils exposés par les microservices.
+
+### 4.4. Connexion du chatbot aux microservices avec MCP
+
+Intégration du client MCP dans le chatbot afin de permettre à l'agent IA de sélectionner et d'appeler les outils appropriés selon les demandes de l'utilisateur.
+
+Cette intégration relie les interactions en langage naturel aux fonctionnalités backend de l'application.
+
+### 4.5. Tests du chatbot avec un client REST
+
+Exposition d'un endpoint REST permettant d'envoyer des messages au chatbot et de récupérer ses réponses.
+
+Les tests permettent de vérifier les échanges entre le client, l'agent IA et les outils MCP.
+
+### 4.6. Intégration avec Telegram
+
+Connexion du chatbot à Telegram afin de permettre aux utilisateurs d'interagir avec l'agent IA à travers une interface de messagerie.
+
+### 4.7. Intégration avec Discord
+
+Connexion du chatbot à Discord pour rendre les fonctionnalités de l'agent IA accessibles depuis un serveur ou une interface conversationnelle Discord.
+
+## 5. Architecture générale
+
+L'application repose sur les composants suivants :
+
+- **Customer-Service** : gestion des clients.
+- **EBank-Service** : gestion des fonctionnalités bancaires.
+- **Gateway-Service** : point d'entrée et routage des requêtes.
+- **Discovery-Service** : enregistrement et découverte des microservices.
+- **Agent IA** : traitement des demandes en langage naturel avec Spring AI.
+- **Serveur MCP** : exposition des outils accessibles à l'agent.
+- **Clients conversationnels** : accès au chatbot via REST, Telegram et Discord.
+
+### Flux de communication
+
+1. Le client envoie une requête à la Gateway ou au chatbot.
+2. La Gateway route les requêtes vers les services backend appropriés.
+3. Les microservices communiquent entre eux grâce à OpenFeign.
+4. Resilience4J contribue à gérer les défaillances des appels protégés par le Circuit Breaker.
+5. L'agent IA utilise les outils MCP disponibles pour accéder aux fonctionnalités autorisées.
+6. Le chatbot retourne une réponse au client REST, Telegram ou Discord.
+
+## 6. Résultats attendus
+
+À l'issue du projet, l'application doit permettre de :
+
+- Organiser les fonctionnalités bancaires dans des microservices indépendants.
+- Assurer la communication interservices avec OpenFeign.
+- Améliorer la résilience des communications avec Resilience4J.
+- Centraliser le routage avec Spring Cloud Gateway.
 - Découvrir les services grâce à Eureka.
-- Faciliter la communication entre les services avec OpenFeign.
-- Centraliser la configuration avec Spring Cloud Config.
+- Tester et documenter les API backend avec Postman et Swagger UI.
+- Développer un agent IA avec Spring AI.
+- Exposer et exploiter des outils via MCP.
+- Interagir avec le chatbot à travers un client REST, Telegram et Discord.
 
-## 6. Conclusion
+## 7. Conclusion
 
-Ce TP permet de mettre en pratique les principaux concepts d'une architecture microservices avec Spring Boot et Spring Cloud. Il met en évidence l'intérêt de la séparation des responsabilités, de la découverte des services, du routage des requêtes, de la communication interservices et de la centralisation de la configuration.
+Ce projet permet de combiner une architecture microservices avec les capacités de l'intelligence artificielle générative.
 
-Cette architecture constitue une base pour développer des applications distribuées modulaires, évolutives et faciles à maintenir.
+La première partie met en pratique les concepts de communication interservices, de routage, de découverte et de tolérance aux pannes. La deuxième partie étend cette architecture en intégrant un agent IA capable d'utiliser les fonctionnalités backend via MCP et de les rendre accessibles à travers plusieurs interfaces conversationnelles.
 
-## 7. Ressources pédagogiques
+L'ensemble constitue une base pour la conception d'applications distribuées intégrant des services backend et des interfaces conversationnelles intelligentes.
 
-- [Partie 1 : Architecture Microservices](https://www.youtube.com/watch?v=kOVHzN8I8e8)
-- [Partie 2 : Architecture Microservices](https://www.youtube.com/watch?v=-iM3J_mgqlM)
-- [Spring Cloud Config](https://www.youtube.com/watch?v=-G2rcLMO1gQ)
+## 8. Ressources pédagogiques
 
+- [Partie 1 : Architecture Microservices et communication interservices](https://www.youtube.com/watch?v=cdFz3VemT1Q)
+- [Partie 2 : Agent IA avec Spring AI et MCP](https://www.youtube.com/watch?v=JHvxSZTWSsY)
