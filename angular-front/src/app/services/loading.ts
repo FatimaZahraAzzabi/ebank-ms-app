@@ -1,8 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable,signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Loading {
-  loading=sig
+  loading=signal<boolean>(false);
+
+  public isLoading=this.loading.asReadonly();
+
+  public setLoading(value :boolean){
+       this.loading.set(value);
+  }
+
+
 }

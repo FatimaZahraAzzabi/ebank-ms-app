@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { AsyncPipe } from '@angular/common';
 import { AccountListState, RequestStatus } from '../model/account.model';
 import { Observable, map, catchError, of } from 'rxjs';
+import {Loading} from '../services/loading';
 
 @Component({
   selector: 'app-accounts',
@@ -12,6 +13,7 @@ import { Observable, map, catchError, of } from 'rxjs';
 })
 export class Accounts {
   private http = inject(HttpClient);
+  protected loadService=inject(Loading);
 
   RequestStatus = RequestStatus;
 
